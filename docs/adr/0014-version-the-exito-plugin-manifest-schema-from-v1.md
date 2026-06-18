@@ -1,6 +1,6 @@
 # Version the Éxito Plugin Manifest schema from v1
 
-Every Éxito Plugin Manifest must declare a schema version from v1 onward, such as `schemaVersion: "1.0"`. This separates manifest-format compatibility from plugin package/version semantics.
+Every Éxito Plugin Manifest must declare a schema version from v1 onward, such as `schemaVersion: "1.0"`. Harness will reject manifests with missing schema versions or unknown newer major schema versions. This separates manifest-format compatibility from plugin package/version semantics.
 
 ## Consequences
 

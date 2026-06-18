@@ -4,4 +4,4 @@ Harness commands will execute directly by default instead of asking for confirma
 
 ## Consequences
 
-The CLI is fast and script-friendly. Harness must make `--dry-run` accurate and clear because it is the primary safety preview mechanism instead of an interactive confirmation step.
+The CLI is fast and script-friendly. Harness must make `--dry-run` accurate and clear because it is the primary safety preview mechanism instead of an interactive confirmation step. A valid dry run exits with `0` even when it reports changes that would be applied; pending changes are information, not an error.
