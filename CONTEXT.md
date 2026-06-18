@@ -12,6 +12,70 @@ _Avoid_: Skill when referring to the whole installable unit, extension, capabili
 The Éxito-owned collection of approved plugins that users can browse, select, and install.
 _Avoid_: Random upstream repo, raw marketplace, unfiltered skill list, capability catalog
 
+**Catalog Profile**:
+A curated discovery view over the plugin catalog for a role, technology, or similar adoption context. In v1, catalog profiles are discovery scope: explicit filters and visible metadata that describe why a plugin may be relevant, not something Harness installs or an agent target it installs into.
+_Avoid_: Plugin bundle, meta-plugin, automatic dependency set, role package
+
+**Catalog Profile Axis**:
+A centrally recognized classification dimension for catalog profiles, such as role or technology. Axes define contextual relevance, not installation target, maturity, endorsement, or stability.
+_Avoid_: Combined profile, stack bundle, profile hierarchy, free-form tag category, recommendation level, installation target
+
+**Catalog Profile Registry**:
+The centrally curated vocabulary of catalog profile axes and allowed profile values, including user-facing descriptions for each profile. In v1, the initial values are `role:frontend`, `role:fullstack`, `technology:react`, and `technology:nextjs`; additional values require later explicit decisions, and `fullstack` is a standalone audience profile rather than shorthand for `frontend` plus `backend`.
+_Avoid_: Plugin-local profile vocabulary, free-form profile tags, ad hoc labels, undocumented ids
+
+**Canonical Profile ID**:
+The exact catalog profile identifier from the centrally curated vocabulary, expressed with its axis when used in command contracts, such as `role:frontend` or `technology:react`. Canonical profile IDs are the only valid stored or contract values for profile filters.
+_Avoid_: Alias, shorthand, display label, fuzzy profile value
+
+**Profile Alias**:
+A human-friendly shorthand or alternate wording that can help textual search or suggestions find a canonical profile ID. A profile alias is not a canonical profile ID and must not become a stored value or command contract value.
+_Avoid_: Canonical profile value, accepted filter value, registry id
+
+**Catalog Recommendation Level**:
+A future catalog concept reserved for expressing a plugin's maturity, stability, audience readiness, or endorsement level, such as beginner, advanced, team-standard, or experimental. It is not active v1 catalog behavior; it remains separate from catalog profiles until governance rules define who assigns levels, how they change, and what consequences they have.
+_Avoid_: Catalog Profile, Catalog Profile Axis, role profile, technology profile, Profile Membership
+
+**Catalog Profile Filter**:
+An explicit catalog discovery criterion that selects one centrally curated catalog profile by exact canonical axis and profile id. Profile filters shape discovery only when requested; the default catalog view remains unprofiled and shows all catalog plugins.
+_Avoid_: Default profile, implicit profile, install selection, hidden catalog segment, alias filter
+
+**Multiple Catalog Profile Filters**:
+A catalog discovery request that selects more than one canonical profile ID by declaring each profile filter separately. Multiple filters are separate explicit criteria, not one comma-combined profile expression or bundled profile.
+_Avoid_: Comma-separated profile list, combined profile expression, profile bundle
+
+**Empty Profile-Filtered Discovery**:
+A catalog discovery result where the user's valid Catalog Profile Filter matches no plugins. It is still a successful filtered discovery, not an invalid profile, fallback search, or recommendation opportunity.
+_Avoid_: Invalid profile result, fallback discovery, recommendation gap, hidden expansion
+
+**Same-Axis Profile Suggestion**:
+A navigational hint that shows available canonical profiles from the same Catalog Profile Axis as an empty valid filter, such as other `technology:*` values for an empty technology profile. Same-axis suggestions help users choose another profile without inventing cross-axis recommendations.
+_Avoid_: Cross-axis recommendation, smart recommendation, inferred profile, related role suggestion
+
+**Profile Match**:
+A catalog plugin that belongs to at least one selected catalog profile during discovery. A profile match is binary per profile; discovery may distinguish all-profile matches from partial matches, but profile membership itself has no weight, score, primary status, or secondary status.
+_Avoid_: Selected plugin, required plugin, installed plugin, weighted profile match, scored profile match
+
+**Profile Match Reason**:
+The visible explanation of how many selected catalog profiles a matched plugin belongs to in ranked discovery, such as matching 2 of 2 selected profiles versus 1 of 2. It explains ordering transparency only; it is not a score, weight, recommendation level, or installation rule.
+_Avoid_: Hidden sort reason, relevance score, weighted profile match, install eligibility
+
+**Profiled Plugin**:
+A plugin that has been classified as relevant to one or more catalog profiles. Profile classification applies to the plugin as a whole, not to individual components inside the plugin.
+_Avoid_: Profiled component, tagged skill, tagged MCP
+
+**Profile Membership**:
+A plugin's binary reference to one or more centrally curated catalog profiles, expressed as explicit profile axis and profile id pairs. A plugin either belongs to a catalog profile or it does not; membership does not express strength, priority, ranking, or relevance score.
+_Avoid_: Bare profile string, free-form plugin tag, plugin-defined profile value, central membership list, primary profile, secondary profile, weighted membership, profile score
+
+**Invalid Profile Membership**:
+A plugin profile membership reference whose axis or profile id is absent from the Catalog Profile Registry. Invalid profile membership is a catalog validation failure because it breaks the curated vocabulary.
+_Avoid_: Unknown profile warning, ignored profile, omitted profile membership, plugin-local profile
+
+**Visible Profile Metadata**:
+The profile membership shown in plugin detail views so users can audit why a plugin appears in a profile-filtered catalog discovery context. Visible profile metadata is transparency metadata only and does not change installation behavior.
+_Avoid_: Install requirement, dependency metadata, hidden scoring signal, automatic selection
+
 **Catalog Source**:
 The approved location Harness reads plugin definitions and assets from. In v1, the only supported catalog source is the curated catalog shipped inside `@grupo-exito/harness`.
 _Avoid_: Arbitrary URL, local plugin source, raw git repository
@@ -25,8 +89,8 @@ The npm/npx command-line interface that installs selected catalog plugins into o
 _Avoid_: Catalog, registry
 
 **Installation Target**:
-The destination agent selected during installation, such as Codex or Claude Code.
-_Avoid_: Installation scope, project-local, global, destination
+The destination agent selected during installation, such as Codex or Claude Code. Installation target is separate from catalog profile context; target compatibility is governed by plugin and component target constraints.
+_Avoid_: Installation scope, project-local, global, destination, catalog profile, profile axis
 
 **Installation Method**:
 The file placement strategy selected during installation, such as symlink or copy.
@@ -201,7 +265,7 @@ Optional component metadata that declares whether a component should be directly
 _Avoid_: Adapter guess, implicit invocation behavior
 
 **Component Target Constraint**:
-The component-level list of supported installation targets, used when a component is only valid for specific agents.
+The component-level list of supported installation targets, used when a component is only valid for specific agents. Component target constraints govern compatibility, not catalog profile membership.
 _Avoid_: Adapter inference, universal by accident
 
 **Compatible Component**:
